@@ -140,8 +140,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
             else if(btn == R.id.btnequal)
             {
-                ans = ans+num;
-                num=0;
+
                 result.setText(""+ans);
                 num = ans;
                 ans = 0;
