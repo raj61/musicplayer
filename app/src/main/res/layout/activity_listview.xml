@@ -7,5 +7,12 @@
     android:layout_height="fill_parent"
     android:padding="10dip"
     android:textSize="16dip"
-    android:textStyle="bold" >
+    android:textStyle="bold"
+    android:autoText="false"
+    android:background="@color/bright_foreground_disabled_material_light"
+    android:backgroundTint="@color/abc_background_cache_hint_selector_material_dark"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:foreground="@color/accent_material_light">
 </TextView>
