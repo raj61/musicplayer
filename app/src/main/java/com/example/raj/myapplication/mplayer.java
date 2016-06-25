@@ -13,6 +13,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,21 +37,54 @@ public class mplayer extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mplayer);
+        File filei = getBaseContext().getFileStreamPath("playlist");
+        if(filei.exists())
+        {
+            Toast.makeText(this,"Playlist exists ",Toast.LENGTH_SHORT).show();
+            try {
+                FileInputStream infile = openFileInput("playlist");
+                ObjectInputStream is = new ObjectInputStream(infile);
+                songList = (ArrayList<HashMap<String,String>>) is.readObject();
+                for( HashMap<String,String> song:songList){
+                    songarray.add(song.get("songTitle"));
+                    songpath.add(song.get("songPath"));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (StreamCorruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
 
-
-        if(MEDIA_PATH != null){
-            File home = new File(MEDIA_PATH);
-            File[] listFiles = home.listFiles();
-            if(listFiles != null && listFiles.length > 0){
-                for(File file : listFiles){
-                    if(file.isDirectory()){
-                        scanDirectory(file);
-                    }
-                    else {
-                        addSongToList(file);
+            if (MEDIA_PATH != null) {
+                File home = new File(MEDIA_PATH);
+                File[] listFiles = home.listFiles();
+                if (listFiles != null && listFiles.length > 0) {
+                    for (File file : listFiles) {
+                        if (file.isDirectory()) {
+                            scanDirectory(file);
+                        } else {
+                            addSongToList(file);
+                        }
                     }
                 }
             }
+            try {
+                FileOutputStream outfile = openFileOutput("playlist",MODE_PRIVATE);
+                ObjectOutput ois = new ObjectOutputStream(outfile);
+                ois.writeObject(songList);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
         ListView li = (ListView)findViewById(R.id.listView);
         ArrayAdapter<String> me = new ArrayAdapter<String>(this,R.layout.activity_listview,songarray);
