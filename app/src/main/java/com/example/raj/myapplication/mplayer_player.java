@@ -1,6 +1,8 @@
 package com.example.raj.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +16,35 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class mplayer_player extends AppCompatActivity implements View.OnClickListener{
+public class mplayer_player extends AppCompatActivity implements View.OnClickListener, AudioManager.OnAudioFocusChangeListener {
     ImageButton btnplay,songprev,songnext;
     int pos,tottime,totmin,totsec;
+    AudioManager am= null;
     ArrayList<String> songarray,songpath;
     MediaPlayer mediaPlayer = new MediaPlayer();
     TextView songname,totaltime,curtime;
     SeekBar s;
+
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        switch (focusChange){
+            case (AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK):
+                //lower the volume
+                mediaPlayer.setVolume(0.2f,0.2f);
+                break;
+            case (AudioManager.AUDIOFOCUS_LOSS):
+                mediaPlayer.pause();
+                break;
+            case (AudioManager.AUDIOFOCUS_GAIN):
+                mediaPlayer.setVolume(1f,1f);
+                mediaPlayer.start();
+                break;
+            default:break;
+
+        }
+    }
+
+
     class mythread extends Thread{
         int i;
         int pau=0;
@@ -70,7 +94,9 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
         songpath = in.getStringArrayListExtra("songpath");
         songname = (TextView)findViewById(R.id.songname);
         songname.setText(songarray.get(pos));
-
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        // Request audio focus for playback
+        am.requestAudioFocus(this,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN);
 
         try {
             mediaPlayer.setDataSource(songpath.get(pos));
@@ -204,7 +230,12 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onPause(){
         super.onPause();
-        mediaPlayer.pause();
+//        mediaPlayer.pause();
 
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+//        mediaPlayer.pause();
     }
 }

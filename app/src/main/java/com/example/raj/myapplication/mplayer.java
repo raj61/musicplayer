@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -32,12 +33,14 @@ public class mplayer extends AppCompatActivity{
     final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath()+"/";
     private ArrayList<HashMap<String,String>> songList = new ArrayList<HashMap<String, String>>();
     private String mp3Pattern = ".mp3";
-
+    Spinner s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mplayer);
         File filei = getBaseContext().getFileStreamPath("playlist");
+        s = (Spinner)findViewById(R.id.spinner);
+        s.setVisibility(View.VISIBLE);
         if(filei.exists())
         {
             Toast.makeText(this,"Playlist exists ",Toast.LENGTH_SHORT).show();
@@ -58,6 +61,7 @@ public class mplayer extends AppCompatActivity{
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            s.setVisibility(View.GONE);
         }
         else {
 
@@ -84,6 +88,7 @@ public class mplayer extends AppCompatActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            s.setVisibility(View.GONE);
 
         }
         ListView li = (ListView)findViewById(R.id.listView);

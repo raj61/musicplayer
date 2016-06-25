@@ -1,7 +1,9 @@
 package com.example.raj.myapplication;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button app1,mplayer;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
