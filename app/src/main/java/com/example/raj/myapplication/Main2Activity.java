@@ -12,6 +12,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     Button btn0,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btnadd,btnequal,btnc,btnminus,btnmul,btndivide;
     TextView result;
     int ans=0,num=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         btnminus.setOnClickListener(this);
         btnmul.setOnClickListener(this);
         btndivide.setOnClickListener(this);
+
     }
 
     @Override

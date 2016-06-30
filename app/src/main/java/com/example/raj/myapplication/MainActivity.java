@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    public final static int cont = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +41,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this,"onResume",Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"onResume",Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(this,"onPesume",Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"onPesume",Toast.LENGTH_LONG).show();
 
     }
 
@@ -115,5 +117,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Toast.makeText(this,"Destroying main...",Toast.LENGTH_SHORT).show();
     }
 }

@@ -18,8 +18,10 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_alignEnd="@+id/listView"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:spinnerMode="dropdown"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

@@ -81,4 +81,20 @@
         android:layout_above="@+id/totaltime"
         android:layout_toEndOf="@+id/songprev" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/artist"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/songname" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

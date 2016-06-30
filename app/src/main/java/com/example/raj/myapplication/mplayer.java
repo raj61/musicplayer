@@ -34,6 +34,7 @@ public class mplayer extends AppCompatActivity{
     private ArrayList<HashMap<String,String>> songList = new ArrayList<HashMap<String, String>>();
     private String mp3Pattern = ".mp3";
     Spinner s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +109,7 @@ public class mplayer extends AppCompatActivity{
             }
         };
         li.setOnItemClickListener(liad);
+
     }
 
 

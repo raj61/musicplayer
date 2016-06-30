@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.raj.myapplication">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,7 +27,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".mplayer" />
-        <activity android:name=".mplayer_player"></activity>
+        <activity android:name=".mplayer_player" />
     </application>
 
 </manifest>
