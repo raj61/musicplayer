@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaDataSource;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class mplayer_player extends AppCompatActivity implements View.OnClickListener, AudioManager.OnAudioFocusChangeListener {
-    ImageButton btnplay,songprev,songnext;
-    int pos,tottime,totmin,totsec;
+    ImageButton btnplay,songprev,songnext,shuffle;
+    int pos,tottime,totmin,totsec, suffleon=0;
     AudioManager am= null;
     ImageView imageView;
     ArrayList<String> songarray,songpath;
@@ -32,7 +36,7 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
     TextView songname,totaltime,curtime,artist;
     Bitmap img;
     SeekBar s;
-//    NewMessageNotification notification;
+    NewMessageNotification notification;
     @Override
     public void onAudioFocusChange(int focusChange) {
         switch (focusChange){
@@ -110,6 +114,8 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
         s = (SeekBar)findViewById(R.id.seekBar);
         curtime = (TextView)findViewById(R.id.curtime);
         btnplay.setOnClickListener(this);
+        shuffle = (ImageButton)findViewById(R.id.shuffle);
+        shuffle.setOnClickListener(this);
 
         songprev.setOnClickListener(this);
 
@@ -120,7 +126,7 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
         // Request audio focus for playback
         am.requestAudioFocus(this,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN);
         // notification
-//        notification = new NewMessageNotification();
+        notification = new NewMessageNotification();
 //        notification.notify(this,mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE),1);
 
         resetView();
@@ -203,38 +209,71 @@ public class mplayer_player extends AppCompatActivity implements View.OnClickLis
             prevsong();
 
         }
+        if( i == R.id.shuffle)
+        {
+            if(suffleon == 0)
+            {
+                suffleon = 1;
+                shuffle.setBackgroundColor(Color.parseColor("#2d52c2"));
+
+            }
+            else
+            {
+                suffleon = 0;
+                shuffle.setBackgroundColor(Color.parseColor("#cfd0d3"));
+            }
+
+        }
 
     }
     public void nextsong() throws IOException {
         mediaPlayer.reset();
+
         pos = pos+1;
+        if(suffleon==1)
+        {
+            pos = (int) (Math.random()*(songarray.size()-1));
+
+        }
        resetView();
     }
     public void prevsong() {
         mediaPlayer.reset();
         pos = pos-1;
+        if(suffleon==1)
+        {
+            pos = ((int)Math.random())%(songarray.size()-1);
+
+        }
         resetView();
     }
 
     public void resetView(){
+        try {
+            mr.setDataSource(songpath.get(pos));
+            notification.cancel(this);
+            notification.notify(this, mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE), 1);
+            if (mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE) != null)
+                songname.setText(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
+            else
+                songname.setText(songarray.get(pos));
+            if (mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST) != null)
+                artist.setText(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
+            byte[] data = mr.getEmbeddedPicture();
+            if (data != null) {
+                img = BitmapFactory.decodeByteArray(data, 0, data.length);
+                imageView.setImageBitmap(img);
+//            RelativeLayout lay = (RelativeLayout) findViewById(R.id.mplayer_player);
+//
+//            Drawable d = new BitmapDrawable(getResources(),img);
+//            lay.setBackground(d);
 
-        mr.setDataSource(songpath.get(pos));
-//        notification.cancel(this);
-//        notification.notify(this,mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE),1);
-        if(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)!=null)
-            songname.setText(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
-        else
-            songname.setText(songarray.get(pos));
-        if(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)!=null)
-            artist.setText(mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
-//        byte[] data = mr.getEmbeddedPicture();
-//        if(data!=null)
-//        {
-//            img = BitmapFactory.decodeByteArray(data,0,data.length);
-//            imageView.setImageBitmap(img);
-//            imageView.setAdjustViewBounds(true);
-//            imageView.setLayoutParams(new LinearLayout.LayoutParams(500,500));
-//        }
+            }
+        }
+        catch (Exception e){
+            notification.cancel(this);
+            notification.notify(this, songarray.get(pos), 1);
+        }
 
         try {
             mediaPlayer.setDataSource(songpath.get(pos));

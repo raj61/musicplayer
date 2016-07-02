@@ -42,7 +42,7 @@ public class NewMessageNotification {
      * @see #cancel(Context)
      */
     public static void notify(final Context context,
-                              final String exampleString, final int number) {
+                               String exampleString, final int number) {
         final Resources res = context.getResources();
 
         // This image is used as the notification's large icon (thumbnail).
@@ -53,7 +53,8 @@ public class NewMessageNotification {
         final Bitmap picture =  BitmapFactory.decodeResource(res,R.drawable.example_picture);
 
 
-
+        if(exampleString==null)
+            exampleString="hello";
         final String ticker = exampleString;
 //        final String title = res.getString(
 //                R.string.new_message_notification_title_template, exampleString);
@@ -66,7 +67,7 @@ public class NewMessageNotification {
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
-                .setDefaults(Integer.parseInt(Notification.CATEGORY_RECOMMENDATION))
+                .setDefaults(Notification.DEFAULT_LIGHTS)
 
                 // Set required fields, including the small icon, the
                 // notification title, and text.

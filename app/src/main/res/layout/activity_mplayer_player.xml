@@ -7,32 +7,33 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:id="@+id/mplayer_player"
     tools:context="com.example.raj.myapplication.mplayer_player">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnplay"
-        android:layout_marginBottom="156dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@android:drawable/ic_media_pause" />
+        android:src="@android:drawable/ic_media_pause"
+        android:layout_above="@+id/totaltime"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/songnext"
-        android:layout_alignTop="@+id/btnplay"
-        android:layout_toEndOf="@+id/btnplay"
-        android:src="@android:drawable/ic_media_next" />
+        android:src="@android:drawable/ic_media_next"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_toEndOf="@+id/curtime" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/songprev"
-        android:layout_alignTop="@+id/btnplay"
-        android:layout_toStartOf="@+id/btnplay"
-        android:src="@android:drawable/ic_media_previous" />
+        android:src="@android:drawable/ic_media_previous"
+        android:layout_alignBottom="@+id/curtime"
+        android:layout_toStartOf="@+id/btnplay" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,9 +41,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/songname"
-        android:layout_marginTop="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignStart="@+id/songprev" />
 
     <SeekBar
         android:layout_width="match_parent"
@@ -74,12 +74,15 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0"
+        android:text="0:00"
         android:id="@+id/curtime"
         android:layout_above="@+id/totaltime"
-        android:layout_toEndOf="@+id/songprev" />
+        android:layout_alignEnd="@+id/btnplay"
+        android:layout_toEndOf="@+id/btnplay"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_alignStart="@+id/btnplay" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,14 +90,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/artist"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/songname" />
+        android:layout_below="@+id/songname"
+        android:layout_alignStart="@+id/btnplay" />
 
-    <ImageView
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/shuffle"
+        android:src="@android:drawable/ic_menu_rotate"
+        android:background="#cfd0d3"
+        android:layout_alignTop="@+id/songprev"
+        android:layout_alignBottom="@+id/curtime"
+        android:layout_toEndOf="@+id/starttime" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/example_picture"
+        android:layout_above="@+id/starttime"
+        android:layout_toStartOf="@+id/totaltime" />
 
 </RelativeLayout>

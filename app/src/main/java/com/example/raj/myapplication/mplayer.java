@@ -2,6 +2,7 @@ package com.example.raj.myapplication;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.media.MediaMetadataRetriever;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class mplayer extends AppCompatActivity{
     private ArrayList<HashMap<String,String>> songList = new ArrayList<HashMap<String, String>>();
     private String mp3Pattern = ".mp3";
     Spinner s;
+    MediaMetadataRetriever mr = new MediaMetadataRetriever();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,10 @@ public class mplayer extends AppCompatActivity{
             s.setVisibility(View.GONE);
 
         }
+        int size = songpath.size();
+
         ListView li = (ListView)findViewById(R.id.listView);
+
         ArrayAdapter<String> me = new ArrayAdapter<String>(this,R.layout.activity_listview,songarray);
         li.setAdapter(me);
         AdapterView.OnItemClickListener liad = new AdapterView.OnItemClickListener() {
@@ -133,11 +138,32 @@ public class mplayer extends AppCompatActivity{
     private void addSongToList(File song){
         if(song.getName().endsWith(mp3Pattern)){
             HashMap<String,String> songMap = new HashMap<String,String>();
-            songMap.put("songTitle",song.getName().substring(0,(song.getName().length()-4)));
+            String title = "";
+            try{
+                mr.setDataSource(song.getPath());
+                title = mr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            String name =song.getName().substring(0,(song.getName().length()-4));
+            if(title == null || title.length()<=0)
+            {
+                songMap.put("songTitle",name);
+                songarray.add(name);
+            }
+            else
+            {
+                songMap.put("songTitle",title);
+                songarray.add(title);
+            }
+
             songMap.put("songPath",song.getPath());
 
             songList.add(songMap);
-            songarray.add(song.getName().substring(0,(song.getName().length()-4)));
+
             songpath.add(song.getPath());
 
         }
